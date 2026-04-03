@@ -12,7 +12,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-export default function BalanceChart({ data }) {
+export function BalanceChart({ data }) {
   const [animatedData, setAnimatedData] = useState(data);
 
   useEffect(() => {
@@ -24,22 +24,23 @@ export default function BalanceChart({ data }) {
 
         const newPoint = {
           date: new Date().toLocaleTimeString(),
-          balance: last.balance + (Math.random() * 2000 - 1000), 
+          balance: last.balance + (Math.random() * 2000 - 1000),
         };
 
         next.push(newPoint);
 
-        if (next.length > 8) next.shift(); 
+        if (next.length > 8) next.shift();
 
         return next;
       });
-    }, 2000); 
+    }, 3000);
 
     return () => clearInterval(interval);
   }, []);
+
   return (
-    <ResponsiveContainer width="100%" height={300}>
-      <LineChart width={500} height={300} data={animatedData}>
+    <ResponsiveContainer width="100%" height={400}>
+      <LineChart data={animatedData}>
         <CartesianGrid strokeDasharray="3 3" stroke="#333" />
         <XAxis dataKey="date" stroke="#aaa" />
         <YAxis stroke="#aaa" />
@@ -55,10 +56,10 @@ export default function BalanceChart({ data }) {
         <Line
           type="monotone"
           dataKey="balance"
-          stroke="#3b82f6"
+          stroke="url(#colorLine)"
           strokeWidth={3}
-          dot={false}
-          animationDuration={2000}
+          dot={true}
+          animationDuration={3000}
           isAnimationActive={true}
         />
       </LineChart>
