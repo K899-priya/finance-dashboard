@@ -16,7 +16,7 @@
 
 ## 🚀 Live Demo
 
-🔗 https://your-vercel-link
+🔗 https://finance-dashboard-brown-six.vercel.app/
 
 ---
 
