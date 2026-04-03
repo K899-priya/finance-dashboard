@@ -1,6 +1,13 @@
 import {
-  LineChart, Line, XAxis, YAxis, Tooltip,
-  PieChart, Pie, Cell, ResponsiveContainer
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
 } from "recharts";
 
 export function BalanceChart({ data }) {
@@ -14,9 +21,9 @@ export function BalanceChart({ data }) {
         <Line
           type="monotone"
           dataKey="balance"
-          stroke="#38bdf8"
+          stroke="url(#gradient)"
           strokeWidth={3}
-          dot={{ r: 4 }}
+          dot={{ r: 5 }}
           animationDuration={2000}
         />
       </LineChart>

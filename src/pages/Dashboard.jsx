@@ -23,15 +23,14 @@ export default function Dashboard() {
       .reduce(
         (acc, cur) =>
           cur.type === "income" ? acc + cur.amount : acc - cur.amount,
-        0
+        0,
       ),
   }));
 
   const categoryMap = {};
   transactions.forEach((t) => {
     if (t.type === "expense") {
-      categoryMap[t.category] =
-        (categoryMap[t.category] || 0) + t.amount;
+      categoryMap[t.category] = (categoryMap[t.category] || 0) + t.amount;
     }
   });
 
@@ -41,12 +40,11 @@ export default function Dashboard() {
   }));
 
   const highestCategory = [...categoryData].sort(
-    (a, b) => b.value - a.value
+    (a, b) => b.value - a.value,
   )[0];
 
   return (
     <div className="p-6 space-y-8">
-
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <SummaryCard title="Balance" value={balance} />
         <SummaryCard title="Income" value={income} />
@@ -58,49 +56,34 @@ export default function Dashboard() {
           <FaChartLine /> Insights
         </h2>
 
-        <div className="flex flex-col md:flex-row gap-6 text-gray-300">
-          <p className="flex items-center gap-2">
-            <FaWallet className="text-yellow-400" />
-            Highest Spending:
-            <span className="text-white font-medium">
-              {highestCategory?.name || "N/A"}
-            </span>
-          </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="bg-blue-500/10 p-4 rounded-xl">
+            Highest Category
+            <p className="text-lg font-bold">{highestCategory?.name}</p>
+          </div>
 
-          <p className="flex items-center gap-2">
-            <FaMoneyBillWave className="text-red-400" />
-            Total Expenses:
-            <span className="text-white font-medium">
-              ₹{expense}
-            </span>
-          </p>
+          <div className="bg-red-500/10 p-4 rounded-xl">
+            Total Expense
+            <p className="text-lg font-bold">₹{expense}</p>
+          </div>
 
-          <p className="flex items-center gap-2">
-            <FaMoneyBillWave className="text-green-400" />
-            Savings:
-            <span className="text-green-400 font-medium">
-              ₹{balance}
-            </span>
-          </p>
+          <div className="bg-green-500/10 p-4 rounded-xl">
+            Savings
+            <p className="text-lg font-bold">₹{balance}</p>
+          </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
         <div className="bg-white/5 backdrop-blur-lg border border-white/10 p-4 rounded-2xl shadow-lg">
-          <h3 className="text-lg mb-2 text-gray-300">
-            Balance Trend
-          </h3>
+          <h3 className="text-lg mb-2 text-gray-300">Balance Trend</h3>
           <BalanceChart data={balanceData} />
         </div>
 
         <div className="bg-white/5 backdrop-blur-lg border border-white/10 p-4 rounded-2xl shadow-lg flex flex-col items-center">
-          <h3 className="text-lg mb-2 text-gray-300">
-            Spending Breakdown
-          </h3>
+          <h3 className="text-lg mb-2 text-gray-300">Spending Breakdown</h3>
           <CategoryChart data={categoryData} />
         </div>
-
       </div>
     </div>
   );
