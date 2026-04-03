@@ -45,13 +45,13 @@ export default function Dashboard() {
 
   return (
     <div className="p-6 space-y-8">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-white/5 p-4 rounded-2xl shadow-lg hover:scale-105 transition duration-300">
         <SummaryCard title="Balance" value={balance} />
         <SummaryCard title="Income" value={income} />
         <SummaryCard title="Expense" value={expense} />
       </div>
 
-      <div className="bg-white/5 backdrop-blur-lg border border-white/10 p-6 rounded-2xl shadow-lg">
+      <div className="bg-blue-500/10 p-4 rounded-xl hover:scale-105 transition duration-300">
         <h2 className="text-xl font-semibold mb-4 text-blue-400 flex items-center gap-2">
           <FaChartLine /> Insights
         </h2>
