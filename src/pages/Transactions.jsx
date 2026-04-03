@@ -29,7 +29,8 @@ export default function Transactions() {
 
   return (
     <div className="p-6">
-
+    
+    <div className="flex justify-end mb-2">
       {role === "admin" && (
         <button
           onClick={() => {
@@ -41,6 +42,7 @@ export default function Transactions() {
           <FaPlus /> Add Transaction
         </button>
       )}
+      </div>
 
       <div className="flex flex-wrap gap-4 mb-4">
         <input
