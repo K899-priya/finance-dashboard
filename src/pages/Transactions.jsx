@@ -30,7 +30,7 @@ export default function Transactions() {
   return (
     <div className="p-6">
     
-    <div className="flex justify-end mb-2">
+    <div className="flex justify-between mb-2">
       {role === "admin" && (
         <button
           onClick={() => {
@@ -42,9 +42,9 @@ export default function Transactions() {
           <FaPlus /> Add Transaction
         </button>
       )}
-      </div>
+      
 
-      <div className="flex flex-wrap gap-4 mb-4">
+       <div className="flex flex-wrap gap-4 mb-4">
         <input
           type="text"
           placeholder="Search category..."
@@ -68,6 +68,7 @@ export default function Transactions() {
           <option value="date">Sort by Date</option>
           <option value="amount">Sort by Amount</option>
         </select>
+      </div>
       </div>
 
       <div className="bg-gray-900 rounded-xl shadow-lg overflow-hidden">
