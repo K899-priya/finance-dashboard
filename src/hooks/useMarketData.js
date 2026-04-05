@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 export function useMarketData() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     fetch(
@@ -13,10 +12,21 @@ export function useMarketData() {
       .then((json) => {
         const raw = json["Time Series (Daily)"];
 
-        if (!raw) throw new Error("No data");
+        if (!raw) {
+          // 🔥 fallback data (no error UI)
+          setData([
+            { date: "Mon", price: 500 },
+            { date: "Tue", price: 650 },
+            { date: "Wed", price: 720 },
+            { date: "Thu", price: 680 },
+            { date: "Fri", price: 760 },
+          ]);
+          setLoading(false);
+          return;
+        }
 
         const formatted = Object.keys(raw)
-          .slice(0, 10)
+          .slice(0, 7)
           .map((date) => ({
             date,
             price: parseFloat(raw[date]["4. close"]),
@@ -26,16 +36,17 @@ export function useMarketData() {
         setLoading(false);
       })
       .catch(() => {
-        setError(true);
-        setLoading(false);
-
+    
         setData([
-          { date: "Day 1", price: 500 },
-          { date: "Day 2", price: 650 },
-          { date: "Day 3", price: 720 },
+          { date: "Mon", price: 500 },
+          { date: "Tue", price: 650 },
+          { date: "Wed", price: 720 },
+          { date: "Thu", price: 680 },
+          { date: "Fri", price: 760 },
         ]);
+        setLoading(false);
       });
   }, []);
 
-  return { data, loading, error };
+  return { data, loading };
 }

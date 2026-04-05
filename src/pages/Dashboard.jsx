@@ -45,7 +45,7 @@ export default function Dashboard() {
     (a, b) => b.value - a.value
   )[0];
 
-  const { data: marketData, loading, error } = useMarketData();
+  const { data: marketData, loading } = useMarketData();
 
   const latest =
     marketData.length > 0 ? marketData[marketData.length - 1] : null;
@@ -98,8 +98,6 @@ export default function Dashboard() {
             <div className="h-6 w-24 bg-gray-700 rounded"></div>
             <div className="h-40 bg-gray-800 rounded"></div>
           </div>
-        ) : error ? (
-          <p className="text-red-400">Unable to fetch live data</p>
         ) : (
           <>
             <div className="flex justify-between items-center">
