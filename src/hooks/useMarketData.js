@@ -13,7 +13,7 @@ export function useMarketData() {
         const raw = json["Time Series (Daily)"];
 
         if (!raw) {
-          // 🔥 fallback data (no error UI)
+    
           setData([
             { date: "Mon", price: 500 },
             { date: "Tue", price: 650 },
