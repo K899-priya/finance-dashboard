@@ -18,16 +18,18 @@ export default function Dashboard() {
 
   const balance = income - expense;
 
-  const balanceData = transactions.map((t, i) => ({
-    date: t.date,
-    balance: transactions
-      .slice(0, i + 1)
-      .reduce(
-        (acc, cur) =>
-          cur.type === "income" ? acc + cur.amount : acc - cur.amount,
-        0
-      ),
-  }));
+  const balanceData = [...transactions]
+    .sort((a, b) => new Date(a.date) - new Date(b.date))
+    .map((t, i, arr) => ({
+      date: t.date,
+      balance: arr
+        .slice(0, i + 1)
+        .reduce(
+          (acc, cur) =>
+            cur.type === "income" ? acc + cur.amount : acc - cur.amount,
+          0,
+        ),
+    }));
 
   const categoryMap = {};
   transactions.forEach((t) => {
@@ -42,7 +44,7 @@ export default function Dashboard() {
   }));
 
   const highestCategory = [...categoryData].sort(
-    (a, b) => b.value - a.value
+    (a, b) => b.value - a.value,
   )[0];
 
   const { data: marketData, loading } = useMarketData();
@@ -50,8 +52,7 @@ export default function Dashboard() {
   const latest =
     marketData.length > 0 ? marketData[marketData.length - 1] : null;
 
-  const prev =
-    marketData.length > 1 ? marketData[marketData.length - 2] : null;
+  const prev = marketData.length > 1 ? marketData[marketData.length - 2] : null;
 
   const change = latest && prev ? latest.price - prev.price : 0;
 
@@ -71,9 +72,7 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-blue-500/10 p-4 rounded-xl">
             Highest Category
-            <p className="text-lg font-bold">
-              {highestCategory?.name || "--"}
-            </p>
+            <p className="text-lg font-bold">{highestCategory?.name || "--"}</p>
           </div>
 
           <div className="bg-red-500/10 p-4 rounded-xl">
@@ -105,13 +104,8 @@ export default function Dashboard() {
                 {latest ? `₹${latest.price.toFixed(2)}` : "--"}
               </p>
 
-              <p
-                className={
-                  change >= 0 ? "text-green-400" : "text-red-400"
-                }
-              >
-                {change >= 0 ? "▲" : "▼"}{" "}
-                {Math.abs(change).toFixed(2)}
+              <p className={change >= 0 ? "text-green-400" : "text-red-400"}>
+                {change >= 0 ? "▲" : "▼"} {Math.abs(change).toFixed(2)}
               </p>
             </div>
 
@@ -122,16 +116,12 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white/5 backdrop-blur-lg border border-white/10 p-4 rounded-2xl shadow-lg">
-          <h3 className="text-lg mb-2 text-gray-300">
-            Balance Trend
-          </h3>
+          <h3 className="text-lg mb-2 text-gray-300">Balance Trend</h3>
           <BalanceChart data={balanceData} />
         </div>
 
         <div className="bg-white/5 backdrop-blur-lg border border-white/10 p-4 rounded-2xl shadow-lg flex flex-col items-center">
-          <h3 className="text-lg mb-2 text-gray-300">
-            Spending Breakdown
-          </h3>
+          <h3 className="text-lg mb-2 text-gray-300">Spending Breakdown</h3>
           <CategoryChart data={categoryData} />
         </div>
       </div>
