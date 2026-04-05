@@ -1,5 +1,7 @@
 import { useStore } from "../store/useStore";
 import SummaryCard from "../components/SummaryCard";
+import { useMarketData } from "../hooks/useMarketData";
+import MarketChart from "../components/MarketChart";
 import { BalanceChart, CategoryChart } from "../components/Charts";
 import { FaChartLine, FaWallet, FaMoneyBillWave } from "react-icons/fa";
 
@@ -43,6 +45,8 @@ export default function Dashboard() {
     (a, b) => b.value - a.value,
   )[0];
 
+  const marketData = useMarketData();
+
   return (
     <div className="p-6 space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-white/5 p-4 rounded-2xl shadow-lg hover:scale-105 transition duration-300">
@@ -72,6 +76,11 @@ export default function Dashboard() {
             <p className="text-lg font-bold">₹{balance}</p>
           </div>
         </div>
+      </div>
+
+      <div className="bg-white/5 p-4 rounded-2xl">
+        <h3 className="text-lg text-green-400">LPG / Energy Price Trend</h3>
+        <MarketChart data={marketData} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
