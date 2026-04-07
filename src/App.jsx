@@ -1,6 +1,7 @@
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 import Transactions from "./pages/Transactions";
+import Home from "./pages/Home";
 import { useState } from "react";
 
 export default function App() {
@@ -9,6 +10,8 @@ export default function App() {
   return (
     <>
       <Navbar page={page} setPage={setPage} />
+      <Route path="/" element={<Home />} />
+      <Route path="/dashboard" element={<Dashboard />} />
 
       {page === "dashboard" ? <Dashboard /> : <Transactions />}
     </>
