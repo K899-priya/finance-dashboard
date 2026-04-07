@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useStore } from "../store/useStore";
 import {
   LineChart,
   Line,
@@ -63,6 +64,7 @@ export function BalanceChart({ data }) {
 
 export function CategoryChart({ data }) {
   const [activeIndex, setActiveIndex] = useState(null);
+  const { filterCategory, setFilterCategory } = useStore();
 
   const COLORS = [
     "#38bdf8",
@@ -75,50 +77,87 @@ export function CategoryChart({ data }) {
   const total = data.reduce((acc, cur) => acc + cur.value, 0);
 
   return (
-    <div className="w-full h-80 relative">
-      <ResponsiveContainer>
-        <PieChart>
-          <Tooltip
-            contentStyle={{
-              backgroundColor: "#111827",
-              border: "1px solid #374151",
-              borderRadius: "10px",
-              color: "#fff",
-            }}
-          />
+    <div className="w-full h-85 flex flex-col items-center gap-4">
+      
+      
+      <div className="relative w-full h-65">
+        <ResponsiveContainer>
+          <PieChart>
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "#111827",
+                border: "1px solid #374151",
+                borderRadius: "10px",
+                color: "#fff",
+              }}
+            />
 
-          <Pie
-            data={data}
-            dataKey="value"
-            innerRadius={70}
-            outerRadius={100}
-            paddingAngle={3}
-            onMouseEnter={(_, index) => setActiveIndex(index)}
-            onMouseLeave={() => setActiveIndex(null)}
+            <Pie
+              data={data}
+              dataKey="value"
+              innerRadius={70}
+              outerRadius={100}
+              paddingAngle={3}
+              onMouseEnter={(_, index) => setActiveIndex(index)}
+              onMouseLeave={() => setActiveIndex(null)}
+            >
+              {data.map((entry, index) => (
+                <Cell
+                  key={index}
+                  fill={COLORS[index % COLORS.length]}
+                  onClick={() =>
+                    setFilterCategory(
+                      filterCategory === entry.name
+                        ? "all"
+                        : entry.name
+                    )
+                  }
+                  style={{
+                    cursor: "pointer",
+                    filter:
+                      activeIndex === index ||
+                      filterCategory === entry.name
+                        ? "drop-shadow(0 0 10px #38bdf8)"
+                        : "none",
+                    transform:
+                      activeIndex === index ? "scale(1.05)" : "scale(1)",
+                    transition: "all 0.3s ease",
+                  }}
+                />
+              ))}
+            </Pie>
+          </PieChart>
+        </ResponsiveContainer>
+
+        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+          <p className="text-gray-400 text-sm">Total</p>
+          <p className="text-xl font-bold text-white">₹{total}</p>
+        </div>
+      </div>
+
+     
+      <div className="flex flex-wrap justify-center gap-3">
+        {data.map((item, index) => (
+          <div
+            key={index}
+            onClick={() =>
+              setFilterCategory(
+                filterCategory === item.name ? "all" : item.name
+              )
+            }
+            className={`flex items-center gap-2 px-3 py-1 rounded-lg cursor-pointer border ${
+              filterCategory === item.name
+                ? "border-blue-400 bg-blue-400/10"
+                : "border-gray-600"
+            }`}
           >
-            {data.map((_, index) => (
-              <Cell
-                key={index}
-                fill={COLORS[index % COLORS.length]}
-                style={{
-                  filter:
-                    activeIndex === index
-                      ? "drop-shadow(0 0 10px #38bdf8)"
-                      : "none",
-                  transform:
-                    activeIndex === index ? "scale(1.05)" : "scale(1)",
-                  transformOrigin: "center",
-                  transition: "all 0.3s ease",
-                }}
-              />
-            ))}
-          </Pie>
-        </PieChart>
-      </ResponsiveContainer>
-
-      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-        <p className="text-gray-400 text-sm">Total</p>
-        <p className="text-xl font-bold text-white">₹{total}</p>
+            <span
+              className="w-3 h-3 rounded-full"
+              style={{ background: COLORS[index % COLORS.length] }}
+            />
+            <span className="text-sm">{item.name}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
