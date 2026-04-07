@@ -68,7 +68,7 @@ export default function Home() {
               desc: "Safe and reliable local data storage",
             },
           ].map((item, i) => (
-            <motion.div
+            <_motion.div
               key={i}
               whileHover={{ scale: 1.05 }}
               className="p-6 bg-gray-900 rounded-xl text-center shadow"
@@ -78,7 +78,7 @@ export default function Home() {
               </div>
               <h3 className="text-lg font-semibold">{item.title}</h3>
               <p className="text-gray-400">{item.desc}</p>
-            </motion.div>
+            </_motion.div>
           ))}
         </div>
       </section>
