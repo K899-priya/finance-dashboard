@@ -2,15 +2,25 @@ import { useState } from "react";
 import { useStore } from "../store/useStore";
 import CategoryBadge from "../components/CategoryBadge";
 import TransactionModal from "../components/TransactionModal";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion as _motion } from "framer-motion";
 import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 
 export default function Transactions() {
-  const { transactions, role, deleteTransaction } = useStore();
+  const { transactions, role, deleteTransaction, user } = useStore();
 
   const [search, setSearch] = useState("");
   const [type, setType] = useState("all");
   const [sort, setSort] = useState("date");
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (role === "viewer" && !user) {
+      navigate("/login");
+    }
+  }, [navigate, role, user]);
 
   const [showModal, setShowModal] = useState(false);
   const [editData, setEditData] = useState(null);
@@ -29,46 +39,44 @@ export default function Transactions() {
 
   return (
     <div className="p-6">
-    
-    <div className="flex justify-between mb-2">
-      {role === "admin" && (
-        <button
-          onClick={() => {
-            setEditData(null);
-            setShowModal(true);
-          }}
-          className="mb-4 flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg shadow"
-        >
-          <FaPlus /> Add Transaction
-        </button>
-      )}
-      
+      <div className="flex justify-between mb-2">
+        {role === "admin" && (
+          <button
+            onClick={() => {
+              setEditData(null);
+              setShowModal(true);
+            }}
+            className="mb-4 flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg shadow"
+          >
+            <FaPlus /> Add Transaction
+          </button>
+        )}
 
-       <div className="flex flex-wrap gap-4 mb-4">
-        <input
-          type="text"
-          placeholder="Search category..."
-          className="p-2 rounded bg-gray-800 text-white border"
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <div className="flex flex-wrap gap-4 mb-4">
+          <input
+            type="text"
+            placeholder="Search category..."
+            className="p-2 rounded bg-gray-800 text-white border"
+            onChange={(e) => setSearch(e.target.value)}
+          />
 
-        <select
-          className="p-2 rounded bg-gray-800 text-white border"
-          onChange={(e) => setType(e.target.value)}
-        >
-          <option value="all">All</option>
-          <option value="income">Income</option>
-          <option value="expense">Expense</option>
-        </select>
+          <select
+            className="p-2 rounded bg-gray-800 text-white border"
+            onChange={(e) => setType(e.target.value)}
+          >
+            <option value="all">All</option>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+          </select>
 
-        <select
-          className="p-2 rounded bg-gray-800 text-white border"
-          onChange={(e) => setSort(e.target.value)}
-        >
-          <option value="date">Sort by Date</option>
-          <option value="amount">Sort by Amount</option>
-        </select>
-      </div>
+          <select
+            className="p-2 rounded bg-gray-800 text-white border"
+            onChange={(e) => setSort(e.target.value)}
+          >
+            <option value="date">Sort by Date</option>
+            <option value="amount">Sort by Amount</option>
+          </select>
+        </div>
       </div>
 
       <div className="bg-gray-900 rounded-xl shadow-lg overflow-hidden">

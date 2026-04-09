@@ -1,9 +1,17 @@
-import { NavLink } from "react-router-dom";
-import { FaChartLine, FaExchangeAlt, FaHome, FaUserShield, FaUser } from "react-icons/fa";
+import { NavLink, useNavigate } from "react-router-dom";
+import {
+  FaChartLine,
+  FaExchangeAlt,
+  FaHome,
+  FaUserShield,
+  FaUser,
+  FaSignOutAlt,
+} from "react-icons/fa";
 import { useStore } from "../store/useStore";
 
 export default function Navbar() {
-  const { role, setRole } = useStore();
+  const { role, setRole, user, logout } = useStore();
+  const navigate = useNavigate();
 
   const linkStyle =
     "flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300";
@@ -13,9 +21,7 @@ export default function Navbar() {
   return (
     <div className="flex justify-between items-center px-6 py-4 bg-gray-900 border-b border-gray-800">
 
-      <h1 className="text-xl font-bold text-blue-400">
-        FinTech
-      </h1>
+      <h1 className="text-xl font-bold text-blue-400">FinTech</h1>
 
       <div className="flex gap-4 items-center">
 
@@ -63,14 +69,47 @@ export default function Navbar() {
 
           <select
             value={role}
-            onChange={(e) => setRole(e.target.value)}
+            onChange={(e) => {
+              const selected = e.target.value;
+
+              if (selected === "viewer") {
+                const user = localStorage.getItem("viewerUser");
+
+                if (!user) {
+                  navigate("/login");
+                  return;
+                }
+              }
+
+              setRole(selected);
+            }}
             className="bg-transparent text-white outline-none cursor-pointer text-sm"
           >
             <option value="admin">Admin</option>
             <option value="viewer">Viewer</option>
           </select>
-
         </div>
+
+        {/* 👤 USER INFO + LOGOUT */}
+        {role === "viewer" && user && (
+          <div className="flex items-center gap-3 ml-4">
+
+            <div className="text-sm text-gray-300">
+              👋 {user.name}
+            </div>
+
+            <button
+              onClick={() => {
+                logout();
+                navigate("/");
+              }}
+              className="flex items-center gap-1 px-3 py-1 bg-red-500/20 text-red-400 rounded hover:bg-red-500/30 transition"
+            >
+              <FaSignOutAlt /> Logout
+            </button>
+
+          </div>
+        )}
 
       </div>
     </div>

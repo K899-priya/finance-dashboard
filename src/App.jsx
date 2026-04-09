@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 import Transactions from "./pages/Transactions";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
 
 export default function App() {
   return (
@@ -52,8 +53,10 @@ export default function App() {
               </_motion.div>
             }
           />
-        </Routes>
 
+           <Route path="/login" element={<Login />} />
+
+        </Routes>
       </div>
     </Router>
   );

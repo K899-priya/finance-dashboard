@@ -4,8 +4,19 @@ import { useMarketData } from "../hooks/useMarketData";
 import MarketChart from "../components/MarketChart";
 import { BalanceChart, CategoryChart } from "../components/Charts";
 import { FaChartLine } from "react-icons/fa";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
+  const { role, user } = useStore();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (role === "viewer" && !user) {
+      navigate("/login");
+    }
+  }, [navigate, role, user]);
+
   const { transactions } = useStore();
 
   const income = transactions
