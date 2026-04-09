@@ -30,17 +30,10 @@ export default function Home() {
           Track, analyze, and grow your finances with powerful insights.
         </_motion.p>
 
-        <_motion.a
-          href="/dashboard"
-          whileHover={{ scale: 1.1 }}
-          className="mt-6 px-6 py-3 bg-blue-600 rounded-lg shadow-lg z-10"
-        >
-          Get Started
-        </_motion.a>
       </section>
 
       {/* MARKET SECTION */}
-      <section className="py-24 px-6 text-center">
+      <section className="py-15 px-6 text-center">
         <_motion.h2
           variants={fadeUp}
           initial="hidden"
