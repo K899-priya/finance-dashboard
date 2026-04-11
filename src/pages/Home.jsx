@@ -150,7 +150,7 @@ export default function Home() {
         </h2>
 
         <p className="text-gray-400 pb-3">
-          Gain full control over your money with smart tracking and insights.
+          Gain full control over your money with smart tracking.
         </p>
 
         <_motion.a
